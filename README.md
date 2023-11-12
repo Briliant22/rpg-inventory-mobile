@@ -77,14 +77,78 @@ Dengan clean architecture, perubahan pada satu lapisan tidak akan secara langsun
 
     - Memakai minimal tiga elemen input, yaitu name, amount, description. Tambahkan elemen input sesuai dengan model pada aplikasi tugas Django yang telah kamu buat.
 
+        Membuat sebuah kelas yang merupakan StatefulWidget, karena formulir ini akan mengalami perubahan status ketika pengguna melakukan input. Kelas ShopFormPage ini akan berfungsi sebagai kerangka untuk halaman formulir.
+
+        Di dalam State dari ShopFormPage, Developer menentukan beberapa variabel yang akan menyimpan nilai dari setiap TextFormField, sesuai dengan atribut model pada aplikasi Django yang telah dibuat sebelumnya.
+
+        Developer menggunakan GlobalKey untuk FormState agar dapat mengontrol form dari luar widget form itu sendiri, contohnya untuk melakukan validasi formulir.
+
     - Memiliki sebuah tombol Save.
+        
+        Setelah semua input telah diisi dan melewati proses validasi, pengguna dapat menekan tombol 'Save', yang kemudian akan memunculkan dialog yang menampilkan informasi yang telah diinput. Informasi tersebut akan disimpan ke dalam list item.
+
     - Setiap elemen input di formulir juga harus divalidasi dengan ketentuan sebagai berikut:
         - Setiap elemen input tidak boleh kosong.
         - Setiap elemen input harus berisi data dengan tipe data atribut modelnya.
 
+        Setiap TextFormField memiliki validator untuk memastikan bahwa field tersebut tidak kosong dan harus sesuai tipe datanya. Sebagai contoh, untuk amount yang harus berupa integer, validator akan menolak nilai yang merupakan character selain angka.
+
 - [x] Mengarahkan pengguna ke halaman form tambah item baru ketika menekan tombol Tambah Item pada halaman utama.
 
+    Untuk me-routing pengguna ke ShopFormpage untuk menambah item baru saat tombol "Tambah Item" ditekan pada halaman utama, developer telah membuat sebuah ShopCard widget yang merupakan StatelessWidget. Di dalam widget ini, InkWell digunakan untuk menangani ketukan, dan menggunakan Navigator.push untuk berpindah halaman.
+
+    Saat InkWell di-tap, kondisi dicek untuk nama item. Jika nama item adalah "Tambah Item", maka aplikasi akan me-routing ke ShopFormPage yang merupakan formulir untuk menambah item baru. Jika nama item adalah "Lihat Item", maka akan navigasi ke ItemListPage yang merupakan halaman untuk menampilkan daftar item. Pada tombol lainnya, sebuah SnackBar akan ditampilkan memberitahukan pengguna bahwa mereka telah menekan tombol dengan nama item tersebut.
+
 - [x] Memunculkan data sesuai isi dari formulir yang diisi dalam sebuah pop-up setelah menekan tombol Save pada halaman formulir tambah item baru.
+
+    Setelah seluruh input sudah diisi dan divalidasi, tombol 'Save' akan memicu dialog yang menampilkan informasi yang telah diinput dan menyimpannya ke dalam list item.
+
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.indigo),
+                    ),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        listItem.add(Item(_name, _amount, _description));
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const Text('Item berhasil tersimpan'),
+                                content: SingleChildScrollView(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text('Nama: $_name'),
+                                      Text('Price: $_amount'),
+                                      Text('Description: $_description'),
+                                    ],
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text('OK'))
+                                ],
+                              );
+                            });
+                        _formKey.currentState!.reset();
+                      }
+                    },
+                    child: const Text(
+                      "Save",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
 
 - [x] Membuat sebuah drawer pada aplikasi dengan ketentuan sebagai berikut:
 
@@ -92,9 +156,93 @@ Dengan clean architecture, perubahan pada satu lapisan tidak akan secara langsun
     - Ketika memiih opsi Halaman Utama, maka aplikasi akan mengarahkan pengguna ke halaman utama.
     - Ketika memiih opsi (Tambah Item), maka aplikasi akan mengarahkan pengguna ke halaman form tambah item baru.
 
+    Berikut kode untuk membuat drawer:
+
+    class LeftDrawer extends StatelessWidget {
+        const LeftDrawer({super.key});
+
+        @override
+        Widget build(BuildContext context) {
+            return Drawer(
+            child: ListView(
+                children: [
+                const DrawerHeader(
+                    // TODO: Bagian drawer header
+                    decoration: BoxDecoration(
+                      color: Colors.indigo,
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          'Shopping List',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Padding(padding: EdgeInsets.all(10)),
+                        Text(
+                          "Catat seluruh keperluan belanjamu di sini!",
+                          // TODO: Tambahkan gaya teks dengan center alignment, font ukuran 15, warna putih, dan weight biasa
+                        ),
+                      ],
+                  ),
+                ),
+                // TODO: Bagian routing
+                ListTile(
+                    leading: const Icon(Icons.home_outlined),
+                    title: const Text('Halaman Utama'),
+                    // Bagian redirection ke MyHomePage
+                    onTap: () {
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MyHomePage(),
+                        ));
+                    },
+                ),
+                ListTile(
+                    leading: const Icon(Icons.add_shopping_cart),
+                    title: const Text('Tambah Item'),
+                    // Bagian redirection ke ShopFormPage
+                    onTap: () {
+                    /*
+                    TODO: Buatlah routing ke ShopFormPage di sini,
+                    setelah halaman ShopFormPage sudah dibuat.
+                    */
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                        builder: (context) => const ShopFormPage(),
+                        ),
+                    );
+                  },
+                ),
+                ListTile(
+                    leading: const Icon(Icons.app_registration_rounded),
+                    title: const Text('Lihat Item'),
+                    // Bagian redirection ke ShopFormPage
+                    onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                        builder: (context) => const ItemListPage(),
+                        ),
+                    );
+
+                  },
+                ),
+              ],
+            ),
+          );
+        }
+      }
+
 ## Tugas 7: Elemen Dasar Flutter
 
-> 1. Apa perbedaan utama antara stateless dan stateful widget dalam konteks pengembangan aplikasi Flutter?
+> 1. Apa perbedaan utama antara stateless dan stateful widget dalam konteks Developeran aplikasi Flutter?
 
 Dalam Flutter, widget adalah blok dasar pembangun antarmuka pengguna. Ada dua jenis widget utama:
 
