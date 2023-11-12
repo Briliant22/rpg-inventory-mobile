@@ -7,6 +7,91 @@ PBP C
 
 [Link to Role-Playing-Games Inventory System]()
 
+## Tugas 8: Flutter Navigation, Layouts, Forms, and Input Elements
+
+> 1. Jelaskan perbedaan antara Navigator.push() dan Navigator.pushReplacement(), disertai dengan contoh mengenai penggunaan kedua metode tersebut yang tepat!
+
+Navigator.push(): Metode ini digunakan untuk menambahkan rute baru ke tumpukan navigasi. Rute baru ditumpuk di atas rute saat ini, sehingga pengguna dapat kembali ke rute sebelumnya.
+
+Contoh penggunaan Navigator.push():
+
+    onPressed: () {
+    Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => SecondScreen()),
+    );
+    }
+
+
+Navigator.pushReplacement(): Metode ini digunakan untuk mengganti rute saat ini dengan rute baru. Ini berguna ketika Anda ingin mengganti rute saat pengguna menyelesaikan tindakan tertentu dan tidak ingin pengguna kembali ke rute sebelumnya.
+
+Contoh penggunaan Navigator.pushReplacement():
+
+    onPressed: () {
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => NewScreen()),
+    );
+    }
+
+> 2. Jelaskan masing-masing layout widget pada Flutter dan konteks penggunaannya masing-masing!
+
+- Container: Digunakan untuk mengelola tata letak dan dekorasi dasar.
+
+- Row dan Column: Digunakan untuk menempatkan widget secara horizontal (Row) atau vertikal (Column).
+
+- Stack: Menempatkan widget di atas satu sama lain.
+
+- ListView dan GridView: Digunakan untuk menampilkan daftar item secara vertikal (ListView) atau sebagai grid (GridView).
+
+- Expanded: Mengalokasikan ruang tambahan untuk widget anak dalam Row, Column, atau Flex.
+
+> 3. Sebutkan apa saja elemen input pada form yang kamu pakai pada tugas kali ini dan jelaskan mengapa kamu menggunakan elemen input tersebut!
+
+Kode ini menggunakan TextFormField untuk Nama Item, Amount, dan Description. Penggunaan elemen input ini sesuai dengan kebutuhan formulir untuk mengumpulkan informasi yang diperlukan tentang item, seperti nama, jumlah, dan deskripsi. Setiap elemen input juga dilengkapi dengan validasi untuk memastikan data yang dimasukkan sesuai dengan kebutuhan aplikasi.
+
+> 4. Bagaimana penerapan clean architecture pada aplikasi Flutter?
+
+- Domain Layer: Berisi aturan bisnis dan logika aplikasi independen dari infrastruktur atau kerangka kerja.
+
+- Data Layer: Menyediakan implementasi konkrit untuk penyimpanan dan pengambilan data.
+
+- Presentation Layer: Menangani tampilan dan interaksi pengguna.
+
+- Dependency Rule: Lapisan lebih dalam tidak boleh memiliki ketergantungan pada lapisan lebih luar.
+
+Contoh penerapan di Flutter bisa mencakup:
+
+- Use Case Classes: Mewakili fungsionalitas aplikasi yang spesifik.
+
+- Repositories: Menyediakan abstraksi untuk mengakses data.
+
+- Interfaces: Digunakan untuk berkomunikasi antara lapisan.
+- Models: Representasi objek dalam aplikasi.
+
+Dengan clean architecture, perubahan pada satu lapisan tidak akan secara langsung memengaruhi lapisan lain, memudahkan pengujian dan pemeliharaan.
+
+> 5. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial)
+
+- [x] Membuat minimal satu halaman baru pada aplikasi, yaitu halaman formulir tambah item baru dengan ketentuan sebagai berikut:
+
+    - Memakai minimal tiga elemen input, yaitu name, amount, description. Tambahkan elemen input sesuai dengan model pada aplikasi tugas Django yang telah kamu buat.
+
+    - Memiliki sebuah tombol Save.
+    - Setiap elemen input di formulir juga harus divalidasi dengan ketentuan sebagai berikut:
+        - Setiap elemen input tidak boleh kosong.
+        - Setiap elemen input harus berisi data dengan tipe data atribut modelnya.
+
+- [x] Mengarahkan pengguna ke halaman form tambah item baru ketika menekan tombol Tambah Item pada halaman utama.
+
+- [x] Memunculkan data sesuai isi dari formulir yang diisi dalam sebuah pop-up setelah menekan tombol Save pada halaman formulir tambah item baru.
+
+- [x] Membuat sebuah drawer pada aplikasi dengan ketentuan sebagai berikut:
+
+    - Drawer minimal memiliki dua buah opsi, yaitu Halaman Utama dan Tambah Item.
+    - Ketika memiih opsi Halaman Utama, maka aplikasi akan mengarahkan pengguna ke halaman utama.
+    - Ketika memiih opsi (Tambah Item), maka aplikasi akan mengarahkan pengguna ke halaman form tambah item baru.
+
 ## Tugas 7: Elemen Dasar Flutter
 
 > 1. Apa perbedaan utama antara stateless dan stateful widget dalam konteks pengembangan aplikasi Flutter?
