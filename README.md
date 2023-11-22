@@ -113,19 +113,20 @@ Developer membuat model Item untuk menampung data dari Item yang dibuat pengguna
       return ListView.builder(
         itemCount: snapshot.data!.length,
         itemBuilder: (_, index) => Container(
-            margin: const EdgeInsets.symmetric(
-                horizontal: 16, vertical: 12),
+            margin: const EdgeInsets.symmetric (
+                horizontal: 16, vertical: 12
+            ),
             padding: const EdgeInsets.all(20.0),
             child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
                 Text(
-                "${snapshot.data![index].fields.name}",
-                style: const TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
-                ),
+                  "${snapshot.data![index].fields.name}",
+                  style: const TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                  ),
                 ),
                 const SizedBox(height: 10),
                 Text("${snapshot.data![index].fields.power}"),
@@ -141,7 +142,7 @@ Developer membuat model Item untuk menampung data dari Item yang dibuat pengguna
                 Text(
                     "${snapshot.data![index].fields.description}"
                 )
-            ],
+              ],
             ),
         )
       );
