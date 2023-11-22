@@ -7,6 +7,153 @@ PBP C
 
 [Link to Role-Playing-Games Inventory System]()
 
+## Tugas 9: Integrasi Layanan Web Django dengan Aplikasi Flutter
+
+> 1. Apakah bisa kita melakukan pengambilan data JSON tanpa membuat model terlebih dahulu? Jika iya, apakah hal tersebut lebih baik daripada membuat model sebelum melakukan pengambilan data JSON?
+
+Ya, data JSON di Flutter dapat diambil tanpa perlu membuat model khusus terlebih dahulu. Ini bisa dilakukan dengan menggunakan struktur data bawaan Dart seperti Map dan List untuk menampung dan mengelola data JSON yang diambil.
+
+- Tanpa Model:
+
+Kelebihan: Lebih cepat dan mudah untuk implementasi sederhana; tidak perlu mendefinisikan struktur data terlebih dahulu.
+Kekurangan: Kurang efisien untuk data yang kompleks; meningkatkan risiko kesalahan saat mengakses atau memanipulasi data karena tidak ada validasi atau autocompletion.
+
+- Dengan Model:
+
+Kelebihan: Lebih mudah dalam menangani data yang kompleks; memberikan validasi, autocompletion, dan keamanan tipe data yang lebih baik.
+Kekurangan: Memerlukan waktu lebih untuk setup awal; kode menjadi lebih banyak dan rumit.
+
+> 2. Jelaskan fungsi dari CookieRequest dan jelaskan mengapa instance CookieRequest perlu untuk dibagikan ke semua komponen di aplikasi Flutter.
+
+- Fungsi CookieRequest:
+
+CookieRequest bukanlah bagian standar dari Flutter atau Dart. Namun, dalam konteks umum pengembangan web dan aplikasi, konsep "CookieRequest" mungkin merujuk pada request HTTP yang mengirimkan atau menerima cookie.Fungsi utamanya biasanya untuk mengelola session dan autentikasi, memungkinkan server mengenali pengguna yang sama di berbagai request.
+
+- Pentingnya Berbagi Instance CookieRequest:
+
+Jika aplikasi Flutter Anda berinteraksi dengan server yang menggunakan cookie untuk autentikasi atau manajemen sesi, sangat penting untuk memastikan bahwa cookie tersebut konsisten di semua komponen aplikasi.Ini memastikan bahwa pengguna tetap terotentikasi atau sesi tetap valid di seluruh aplikasi.
+
+> 3. Jelaskan mekanisme pengambilan data dari JSON hingga dapat ditampilkan pada Flutter.
+
+1. Request Data: 
+Gunakan HTTP client (seperti http package di Dart) untuk mengirimkan request ke server.
+
+2. Terima Respons: 
+Server mengirimkan respons dalam format JSON.
+
+3. Parsa Respons: 
+Gunakan json.decode() untuk mengkonversi string JSON menjadi Map atau List di Dart.
+
+4. Gunakan Data: 
+Data yang telah diparsa kemudian dapat digunakan untuk membangun UI atau logika bisnis.
+
+> 4. Jelaskan mekanisme autentikasi dari input data akun pada Flutter ke Django hingga selesainya proses autentikasi oleh Django dan tampilnya menu pada Flutter.
+
+1. Input Data: 
+Di Flutter, pengguna memasukkan data akun (biasanya username dan password).
+
+2. Kirim ke Server Django: 
+Data dikirim ke server Django menggunakan HTTP request.
+
+3. Proses di Django: 
+Django memproses data, melakukan autentikasi (misalnya, memeriksa database untuk username dan password).
+
+4. Respons Autentikasi:
+Django mengirimkan respons (sukses/gagal) kembali ke Flutter.
+
+5. Tampilan Menu: 
+Jika autentikasi berhasil, aplikasi Flutter menampilkan menu atau melakukan navigasi ke halaman berikutnya.
+
+> 5. Sebutkan seluruh widget yang kamu pakai pada tugas ini dan jelaskan fungsinya masing-masing.
+
+1. Scaffold: Membuat struktur dasar layout visual untuk halaman Flutter.
+
+2. Form: Menggunakan formulir yang memungkinkan validasi data input.
+
+3. TextEditingController: Mengontrol teks yang sedang diedit.
+
+4. AlertDialog: Menampilkan dialog dengan pesan dan beberapa aksi.
+
+5. GlobalKey<FormState>: Memungkinkan validasi form dari tempat lain dalam widget tree.
+
+> 6. Jelaskan bagaimana cara kamu mengimplementasikan checklist di atas secara step-by-step! (bukan hanya sekadar mengikuti tutorial).
+
+- [x] Memastikan deployment proyek tugas Django kamu telah berjalan dengan baik.
+
+Project Django Developer masih belum bisa di deploy oleh PaaS PBP, sehingga pada tugas ini, Developer menggunakan link ke localhost (http://127.0.0.1:8000/). 
+
+- [x] Membuat halaman login pada proyek tugas Flutter.
+
+  1.  Impor Paket yang Diperlukan
+  2.  Pengaturan Aplikasi Login
+  3.  Membuat file screen Halaman Login
+  4.  Mengatur proses Login
+  5.  Mengatur Navigasi dan Feedback setelah proses Login
+
+- [x] Mengintegrasikan sistem autentikasi Django dengan proyek tugas Flutter.
+
+- [x] Membuat model kustom sesuai dengan proyek aplikasi Django.
+
+Developer membuat model Item untuk menampung data dari Item yang dibuat pengguna.
+
+      Fields({
+        required this.user,
+        required this.name,
+        required this.power,
+        required this.price,
+        required this.amount,
+        required this.category,
+        required this.description,
+      });
+
+- [x] Membuat halaman yang berisi daftar semua item yang terdapat pada endpoint JSON di Django yang telah kamu deploy.
+
+    - Tampilkan name, amount, dan description dari masing-masing item pada halaman ini.
+
+      return ListView.builder(
+        itemCount: snapshot.data!.length,
+        itemBuilder: (_, index) => Container(
+            margin: const EdgeInsets.symmetric(
+                horizontal: 16, vertical: 12),
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+                Text(
+                "${snapshot.data![index].fields.name}",
+                style: const TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                ),
+                ),
+                const SizedBox(height: 10),
+                Text("${snapshot.data![index].fields.power}"),
+                const SizedBox(height: 10),
+                Text("${snapshot.data![index].fields.price}"),
+                const SizedBox(height: 10),
+                Text("${snapshot.data![index].fields.amount}"),
+                const SizedBox(height: 10),
+                Text(
+                    "${snapshot.data![index].fields.category}"
+                ),
+                const SizedBox(height: 10),
+                Text(
+                    "${snapshot.data![index].fields.description}"
+                )
+            ],
+            ),
+        )
+      );
+
+- [x] Membuat halaman detail untuk setiap item yang terdapat pada halaman daftar Item.
+
+    - Halaman ini dapat diakses dengan menekan salah satu item pada halaman daftar Item.
+
+    - Tampilkan seluruh atribut pada model item kamu pada halaman ini.
+
+    - Tambahkan tombol untuk kembali ke halaman daftar item.
+
 ## Tugas 8: Flutter Navigation, Layouts, Forms, and Input Elements
 
 > 1. Jelaskan perbedaan antara Navigator.push() dan Navigator.pushReplacement(), disertai dengan contoh mengenai penggunaan kedua metode tersebut yang tepat!
